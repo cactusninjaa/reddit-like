@@ -38,7 +38,7 @@ function CreatePostForm({ onSubmit, onCancel, isCreating }: CreatePostFormProps)
   return (
     <div className="create-post-form">
       <h3>Créer un nouveau post</h3>
-      
+
       <div className="form-group">
         <label>Titre *</label>
         <input
@@ -71,19 +71,20 @@ function CreatePostForm({ onSubmit, onCancel, isCreating }: CreatePostFormProps)
         />
       </div>
 
-      <div className="form-buttons">
+      <div className="form-actions">
+        <button
+          onClick={onCancel}
+          className="secondary"
+          type="button"
+        >
+          Annuler
+        </button>
         <button
           onClick={handleSubmit}
           disabled={isCreating}
-          className="submit-btn"
+          type="button"
         >
-          {isCreating ? 'Création...' : 'Créer le post'}
-        </button>
-        <button
-          onClick={onCancel}
-          className="cancel-btn"
-        >
-          Annuler
+          {isCreating ? '⏳ Création...' : '✨ Créer le post'}
         </button>
       </div>
     </div>

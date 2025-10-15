@@ -45,8 +45,8 @@ function App() {
     return <Navigate to="/login" />;
   }
 
-
-  // Récupérer les posts d'un utilisateur spécifique
+ 
+  // Récupérer les posts d'un utilisateur spécifique    d
   const fetchUserPosts = async (userId: string) => {
     try {
       setLoading(true);
@@ -106,26 +106,29 @@ function App() {
   // (moved useEffect above conditional returns)
 
   return (
-    <>
-      <Header
-        onCreatePost={handleToggleCreateForm}
-        showCreateForm={showCreateForm}
-      />
-
-      {showCreateForm && (
-        <CreatePostForm
-          onSubmit={handleCreatePost}
-          onCancel={() => setShowCreateForm(false)}
-          isCreating={creating}
+    <div className="app">
+      <div className="container">
+        <Header
+          onCreatePost={handleToggleCreateForm}
+          showCreateForm={showCreateForm}
         />
-      )}
 
-      <PostList
-        posts={posts}
-        loading={loading}
-        error={error}
-      />
-    </>
+        {showCreateForm && (
+          <CreatePostForm
+            onSubmit={handleCreatePost}
+            onCancel={() => setShowCreateForm(false)}
+            isCreating={creating}
+          />
+        )}
+
+        <PostList
+          posts={posts}
+          loading={loading}
+          error={error}
+        />
+
+      </div>
+    </div>
   );
 }
 

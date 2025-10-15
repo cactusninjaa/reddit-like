@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router";
 import { loginUser } from "../api/api";
+import "../App.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,57 +19,85 @@ const Login = () => {
         localStorage.setItem("authToken", res.token);
         navigate("/");
       }
-    } catch (err: any) {
-      setError(err.error || "Something went wrong");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || "Something went wrong");
+      } else {
+        setError("Something went wrong");
+      }
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("authToken");
 
     if (token) {
-        fetch("http://localhost:3000/api/me", {
+      fetch("http://localhost:3000/api/me", {
         headers: { Authorization: `Bearer ${token}` },
-        })
+      })
         .then(res => res.json())
         .then(data => {
-            if (data.Success) {
-                navigate("/main");
-            } else {
-                localStorage.removeItem("authToken");
-            }
+          if (data.Success) {
+            navigate("/main");
+          } else {
+            localStorage.removeItem("authToken");
+          }
         });
     }
-    }, [navigate]);
-    
+  }, [navigate]);
+
 
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "2rem" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ display: "block", width: "100%", marginBottom: "1rem" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ display: "block", width: "100%", marginBottom: "1rem" }}
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>
-        Don't have an account? <Link to="/signup">Signup</Link>
-      </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h2>🚀 Connexion</h2>
+          <p>Bienvenue ! Connectez-vous à votre compte</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="votre.email@exemple.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="auth-form-group">
+            <label htmlFor="password">Mot de passe</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="auth-submit-btn">
+            ✨ Se connecter
+          </button>
+        </form>
+
+        {error && (
+          <div className="auth-error">
+            ⚠️ {error}
+          </div>
+        )}
+
+        <div className="auth-footer">
+          <p>
+            Pas encore de compte ? <Link to="/signup">Créer un compte</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
