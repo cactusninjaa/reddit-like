@@ -1,16 +1,18 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import router from "./routes.js"
 
 dotenv.config()
 const app = express()
 app.use(cors())
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
-app.get('/', (req, res) => {
-  res.send('The sedulous hyena ate the antelope!');
-});
+app.use('/api', router);
+
+
+
 
 app.listen(PORT, err => {
   if (err) {

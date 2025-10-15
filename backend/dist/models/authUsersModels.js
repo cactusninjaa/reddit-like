@@ -1,6 +1,5 @@
-import mongoose from 'mongoose'
-import { PostSchema } from './postModels.js'
-
+import mongoose from 'mongoose';
+import { PostSchema } from './postModels.js';
 const AuthUserSchema = new mongoose.Schema({
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
@@ -11,9 +10,7 @@ const AuthUserSchema = new mongoose.Schema({
     avatar: { type: String, require: true },
     karma: { type: String, require: false },
     role: { type: String, require: true, default: 'USER' },
-    posts: [ PostSchema ],
-})  
-
-const AuthUser = mongoose.model('AuthUser', AuthUserSchema)
-
-export default AuthUser
+    posts: [PostSchema],
+});
+const AuthUser = mongoose.model('AuthUser', AuthUserSchema);
+export default AuthUser;
