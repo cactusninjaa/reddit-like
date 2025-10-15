@@ -17,7 +17,9 @@ const Login = () => {
       console.log(res)
       if (res.Success) {
         localStorage.setItem("authToken", res.token);
-
+        ////
+        localStorage.setItem("testid", res.testid);
+        //////
         navigate("/");
       }
     } catch (err) {
