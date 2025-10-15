@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { Document } from "mongoose"
 import bcrypt from "bcrypt"
 import AuthUser from "../models/authUsersModels.js"
+import { randomBytes } from "crypto"
 
 type CommentBody = {
     contents: string;
@@ -50,11 +51,12 @@ export const login = async (req: Request, res: Response) => {
 
         if (!isSamePassword) throw new Error("Invalid password")
         
-        const token = bcrypt.hashSync(body.email, 10)
+        const token = randomBytes(32).toString("hex");
 
+        user.token = token
         user.save()
 
-        res.status(200).send({ Success : true })
+        res.status(200).send({ Success : true, token: user.token })
     } catch (error: any) {
         console.log(error)
         res.status(400).send({  Success : false, error: error.message })    
@@ -95,3 +97,24 @@ export const signup = (req: Request, res: Response) => {
         res.status(400).send({  Success : false, error: error.message })
     }
 }
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new Error("No token provided");
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const user = await AuthUser.findOne({ token });
+    if (!user) throw new Error("Invalid token");
+
+    user.token = undefined;
+    await user.save();
+
+    res.status(200).send({ Success: true, message: "Utilisateur déconnecté" });
+  } catch (error: any) {
+    res.status(400).send({ Success: false, error: error.message });
+  }
+};

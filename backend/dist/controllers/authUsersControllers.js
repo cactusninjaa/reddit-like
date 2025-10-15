@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import AuthUser from "../models/authUsersModels.js";
+import { randomBytes } from "crypto";
 export const login = async (req, res) => {
     try {
         const body = req.body;
@@ -11,12 +12,13 @@ export const login = async (req, res) => {
         const user = await AuthUser.findOne({ email: body.email });
         if (!user)
             throw new Error("Invalid email");
-        const plainPasword = body.password;
-        const isSamePassword = await bcrypt.compare(plainPasword, user.password);
+        const isSamePassword = await bcrypt.compare(body.password, user.password);
         if (!isSamePassword)
             throw new Error("Invalid password");
-        // const hashPassword = bcrypt.hashSync(plainPasword, 10)
-        res.status(200).send({ Success: true });
+        const token = randomBytes(32).toString("hex");
+        user.token = token;
+        user.save();
+        res.status(200).send({ Success: true, token: user.token });
     }
     catch (error) {
         console.log(error);
@@ -48,6 +50,24 @@ export const signup = (req, res) => {
     }
     catch (error) {
         console.log(error);
+        res.status(400).send({ Success: false, error: error.message });
+    }
+};
+export const logout = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            throw new Error("No token provided");
+        }
+        const token = authHeader.split(" ")[1];
+        const user = await AuthUser.findOne({ token });
+        if (!user)
+            throw new Error("Invalid token");
+        user.token = undefined;
+        await user.save();
+        res.status(200).send({ Success: true, message: "Utilisateur déconnecté" });
+    }
+    catch (error) {
         res.status(400).send({ Success: false, error: error.message });
     }
 };

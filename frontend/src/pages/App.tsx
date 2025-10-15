@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import './App.css'
+import { Navigate } from 'react-router-dom';
 
 interface Comment {
   _id: string;
@@ -83,6 +83,12 @@ function App() {
       setCreating(false);
     }
   };
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
     try {
@@ -127,7 +133,6 @@ function App() {
 
   if (loading) return <div>Chargement...</div>;
   if (error) return <div>Erreur: {error}</div>;
-
   return (
     <>
       <h1>Reddit-like Posts</h1>
