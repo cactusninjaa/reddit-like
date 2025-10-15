@@ -5,7 +5,7 @@ import postRoutes from "./routes/postRoutes.js";
 const router = Router();
 // Routes spécifiques
 router.use("/auth", authUsersRoutes);
-router.use("/", usersRoutes);
+router.use("/users", usersRoutes);
 router.use("/", postRoutes);
 // Route par défaut en dernier (optionnel)
 router.get("/", (req, res) => {
