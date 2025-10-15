@@ -11,9 +11,6 @@ const PORT = process.env.PORT || 3000
 
 app.use('/api', router);
 
-
-
-
 app.listen(PORT, err => {
   if (err) {
     return console.error(err);
