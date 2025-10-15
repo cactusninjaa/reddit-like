@@ -20,6 +20,6 @@ app.listen(PORT, (err) => {
     if (err) {
         return console.error(err);
     }
-    return console.log(server is listening on https://localhost:${PORT});
+    return console.log(`server is listening on https://localhost:${PORT}`);
 });
 export default app;
