@@ -4,7 +4,7 @@ import AuthUser from "../models/authUsersModels.js";
 const router = Router();
 
 // GET - récupérer tous les utilisateurs
-router.get("/users", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await AuthUser.find();
     res.json(users);
@@ -16,7 +16,7 @@ router.get("/users", async (req, res) => {
 });
 
 // GET - récupérer un utilisateur par son ID
-router.get("/users/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const user = await AuthUser.findById(id);
@@ -32,7 +32,7 @@ router.get("/users/:id", async (req, res) => {
 });
 
 // POST - créer un nouvel utilisateur
-router.post("/users", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       firstName,
@@ -76,7 +76,7 @@ router.post("/users", async (req, res) => {
 });
 
 // PUT - modifier un utilisateur
-router.put("/users/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const updatedUser = await AuthUser.findByIdAndUpdate(id, req.body, {
@@ -97,7 +97,7 @@ router.put("/users/:id", async (req, res) => {
 });
 
 // DELETE - supprimer un utilisateur
-router.delete("/users/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const deletedUser = await AuthUser.findByIdAndDelete(id);

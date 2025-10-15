@@ -23,6 +23,77 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string>('');
 
+  // États pour le formulaire de création de post
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newPost, setNewPost] = useState({
+    title: '',
+    description: '',
+    picture: '',
+    userId: ''
+  });
+  const [creating, setCreating] = useState(false)
+
+  const createPost = async () => {
+    if ( !newPost.title || !newPost.description) {
+      alert('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
+
+    try {
+      setCreating(true);
+      // const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${newPost.userId}/posts`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     title: newPost.title,
+      //     description: newPost.description,
+      //     picture: newPost.picture || undefined
+      //   })
+      // });
+
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/68ef6c0cf6cb6205e18c8dd1/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: newPost.title,
+          description: newPost.description,
+          picture: newPost.picture || undefined
+        })
+      });
+
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la création du post');
+      }
+
+      const createdPost = await response.json();
+
+      // Rafraîchir la liste des posts
+      if (selectedUserId) {
+        fetchUserPosts(selectedUserId);
+      } else {
+        fetchAllPosts();
+      }
+
+      // Réinitialiser le formulaire
+      setNewPost({
+        title: '',
+        description: '',
+        picture: '',
+        userId: ''
+      });
+      setShowCreateForm(false);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de la création');
+    } finally {
+      setCreating(false);
+    }
+  };
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
     try {
@@ -73,17 +144,64 @@ function App() {
       <h1>Reddit-like Posts</h1>
 
       <div className="filter-section">
-        <input
-          type="text"
-          placeholder="ID utilisateur (optionnel)"
-          value={selectedUserId}
-          onChange={(e) => setSelectedUserId(e.target.value)}
-        />
-        <button onClick={() => setSelectedUserId('')}>
-          Voir tous les posts
+        <button
+          className="create-post-btn"
+          onClick={() => setShowCreateForm(!showCreateForm)}
+        >
+          {showCreateForm ? 'Annuler' : 'Créer un post'}
         </button>
       </div>
 
+      {showCreateForm && (
+        <div className="create-post-form">
+          <h3>Créer un nouveau post</h3>
+          
+          <div className="form-group">
+            <label>Titre *</label>
+            <input
+              type="text"
+              placeholder="Titre du post"
+              value={newPost.title}
+              onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Description *</label>
+            <textarea
+              placeholder="Description du post"
+              value={newPost.description}
+              onChange={(e) => setNewPost({ ...newPost, description: e.target.value })}
+              rows={4}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>URL de l'image (optionnel)</label>
+            <input
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={newPost.picture}
+              onChange={(e) => setNewPost({ ...newPost, picture: e.target.value })}
+            />
+          </div>
+          <div className="form-buttons">
+            <button
+              onClick={createPost}
+              disabled={creating}
+              className="submit-btn"
+            >
+              {creating ? 'Création...' : 'Créer le post'}
+            </button>
+            <button
+              onClick={() => setShowCreateForm(false)}
+              className="cancel-btn"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
       <div className="posts-container">
         {posts.length === 0 ? (
           <p>Aucun post disponible</p>
