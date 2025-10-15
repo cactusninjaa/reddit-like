@@ -54,9 +54,12 @@ export const login = async (req: Request, res: Response) => {
         const token = randomBytes(32).toString("hex");
 
         user.token = token
+        ////
+        user.id = body
+        //////
         user.save()
 
-        res.status(200).send({ Success : true, token: user.token })
+        res.status(200).send({ Success : true, token: user.token, testid: user.id })
     } catch (error: any) {
         console.log(error)
         res.status(400).send({  Success : false, error: error.message })    
