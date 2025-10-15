@@ -27,7 +27,7 @@ function App() {
   const fetchAllPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/posts');
+      const response = await fetch('https://reddit-like-backend.vercel.app/api/posts');
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des posts');
       }
@@ -44,7 +44,7 @@ function App() {
   const fetchUserPosts = async (userId: string) => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/api/users/${userId}/posts`);
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userId}/posts`);
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des posts de l\'utilisateur');
       }
