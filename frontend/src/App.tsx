@@ -21,7 +21,7 @@ function App() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [selectedUserId] = useState<string>('');
 
   // États pour le formulaire de création de post
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -42,17 +42,7 @@ function App() {
     try {
       setCreating(true);
       // const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${newPost.userId}/posts`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     title: newPost.title,
-      //     description: newPost.description,
-      //     picture: newPost.picture || undefined
-      //   })
-      // });
-
+     
       const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/68ef6c0cf6cb6205e18c8dd1/posts`, {
         method: 'POST',
         headers: {
@@ -70,7 +60,6 @@ function App() {
         throw new Error('Erreur lors de la création du post');
       }
 
-      const createdPost = await response.json();
 
       // Rafraîchir la liste des posts
       if (selectedUserId) {
