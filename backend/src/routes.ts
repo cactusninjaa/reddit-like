@@ -7,7 +7,7 @@ const router = Router();
 
 // Routes spécifiques
 router.use("/auth", authUsersRoutes);
-router.use("/", usersRoutes);
+router.use("/users", usersRoutes);
 router.use("/", postRoutes);
 
 // Route par défaut en dernier (optionnel)
