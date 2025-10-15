@@ -17,9 +17,6 @@ const Login = () => {
       console.log(res)
       if (res.Success) {
         localStorage.setItem("authToken", res.token);
-        ////
-        localStorage.setItem("testid", res.testid);
-        //////
         navigate("/");
       }
     } catch (err) {
@@ -30,10 +27,7 @@ const Login = () => {
       }
     }
   };
-/////
-  const testid = localStorage.getItem("testid");
-  console.log(testid);
-/////
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -47,7 +41,6 @@ const Login = () => {
             navigate("/main");
           } else {
             localStorage.removeItem("authToken");
-            localStorage.removeItem("testid");
           }
         });
     }
