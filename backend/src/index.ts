@@ -6,6 +6,7 @@ import router from "./routes.js"
 dotenv.config();
 const app = express();
 app.use(cors());
+app.use(express.json())
 const mongoUri = process.env.MONGO_URI;
 if (!mongoUri) {
     throw new Error("MONGO_URI environment variable is not defined");
@@ -20,6 +21,6 @@ app.listen(PORT, (err) => {
     if (err) {
         return console.error(err);
     }
-    return console.log(`server is listening on https://localhost:${PORT}`);
+    return console.log(`server is listening on http://localhost:${PORT}`);
 });
 export default app;
