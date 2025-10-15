@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import './App.css'
+import { Navigate } from 'react-router-dom';
 
 interface Comment {
   _id: string;
@@ -22,6 +22,12 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string>('');
+
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
 
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
@@ -67,7 +73,6 @@ function App() {
 
   if (loading) return <div>Chargement...</div>;
   if (error) return <div>Erreur: {error}</div>;
-
   return (
     <>
       <h1>Reddit-like Posts</h1>
