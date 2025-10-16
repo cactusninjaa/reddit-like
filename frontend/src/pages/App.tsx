@@ -5,7 +5,7 @@ import CreatePostForm from '../utils/CreatePostForm';
 import PostList from '../utils/PostList';
 import type { Post, NewPost } from '../utils/Types';
 import { Navigate } from 'react-router-dom';
-import { getUsers } from '../api/api';
+import { getUsers, userInfo } from '../api/api';
 import { StatsCard } from '../utils/StatsCard';
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId] = useState<string>('');
+  const [userConnected, setUserConnected] = useState<any>({});
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
 
@@ -42,13 +43,23 @@ function App() {
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const result = await userInfo(token);
+        setUserConnected(result);
+      } catch (error) {
+        console.error("Erreur lors de la récupération de l'utilisateur :", error);
+      }
+    };
+
+    fetchUserInfo();
     fetchUsers()
     if (selectedUserId) {
       fetchUserPosts(selectedUserId);
     } else {
       fetchAllPosts();
     }
-  }, [selectedUserId]);
+  }, [selectedUserId, token]);
 
   if (!token) {
     return <Navigate to="/login" />;
@@ -76,7 +87,7 @@ function App() {
   const handleCreatePost = async (newPost: NewPost) => {
     try {
       setCreating(true);
-      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/68ef6c0cf6cb6205e18c8dd1/posts`, {
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userConnected._id}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,6 +102,7 @@ function App() {
       if (!response.ok) {
         throw new Error('Erreur lors de la création du post');
       }
+
 
       // Rafraîchir la liste des posts
       if (selectedUserId) {
@@ -112,13 +124,17 @@ function App() {
     setShowCreateForm(!showCreateForm);
   };
 
+  // console.log(userConnected.firstName)
+
   return (
     <div className="app">
       <div className="container">
-        <StatsCard
-          users={users}
-          posts={posts}
-        />
+        {userConnected.role === "ADMIN" &&
+           <StatsCard
+            users={users}
+            posts={posts}
+          />
+        }
 
         <Header
           onCreatePost={handleToggleCreateForm}

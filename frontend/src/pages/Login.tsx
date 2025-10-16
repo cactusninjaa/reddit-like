@@ -15,7 +15,7 @@ const Login = () => {
     try {
       const res = await loginUser({ email, password });
       console.log(res)
-      if (res.Success) {
+      if (res.success) {
         localStorage.setItem("authToken", res.token);
         localStorage.setItem("expiresAt", res.expiresAt);
         navigate("/");

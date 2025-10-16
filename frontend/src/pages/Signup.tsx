@@ -111,20 +111,6 @@ const Signup = () => {
               required
             />
           </div>
-
-          <div className="auth-form-group">
-            <label htmlFor="role">Rôle</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="USER">👤 Utilisateur</option>
-              <option value="ADMIN">👑 Administrateur</option>
-            </select>
-          </div>
-
           <button type="submit" className="auth-submit-btn">
             ✨ Créer mon compte
           </button>
