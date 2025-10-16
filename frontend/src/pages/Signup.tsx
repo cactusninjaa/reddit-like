@@ -63,7 +63,7 @@ const Signup = () => {
       }
 
       const res = await signupUser({ ...formData, avatar: avatarBase64, posts: [] });
-      if (res.success) {
+      if (res.Success) {
         navigate("/login");
       }
     } catch (err) {
