@@ -5,17 +5,23 @@ import CreatePostForm from '../utils/CreatePostForm';
 import PostList from '../utils/PostList';
 import type { Post, NewPost } from '../utils/Types';
 import { Navigate } from 'react-router-dom';
-import {userInfo} from '../api/api';
+import { getUsers } from '../api/api';
+import { StatsCard } from '../utils/StatsCard';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId] = useState<string>('');
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
 
-  const tokenFromStorage = localStorage.getItem('authToken');
+  const fetchUsers = async () => {
+      const users = await getUsers()
+      setUsers(users)
+  }
+
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
     try {
@@ -36,6 +42,7 @@ function App() {
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
+    fetchUsers()
     if (selectedUserId) {
       fetchUserPosts(selectedUserId);
     } else {
@@ -46,10 +53,8 @@ function App() {
   if (!token) {
     return <Navigate to="/login" />;
   }
-
  
-  // Récupérer les posts d'un utilisateur spécifique
-
+  // Récupérer les posts d'un utilisateur spécifique    d
   const fetchUserPosts = async (userId: string) => {
     try {
       setLoading(true);
@@ -66,12 +71,12 @@ function App() {
     }
   };
 
-  // Créer un nouveau post 
+
+  // Créer un nouveau post
   const handleCreatePost = async (newPost: NewPost) => {
     try {
       setCreating(true);
-      const userToken = await userInfo(tokenFromStorage)
-      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userToken._id}/posts`, {
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/68ef6c0cf6cb6205e18c8dd1/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,11 +112,14 @@ function App() {
     setShowCreateForm(!showCreateForm);
   };
 
-  // (moved useEffect above conditional returns)
-
   return (
     <div className="app">
       <div className="container">
+        <StatsCard
+          users={users}
+          posts={posts}
+        />
+
         <Header
           onCreatePost={handleToggleCreateForm}
           showCreateForm={showCreateForm}
