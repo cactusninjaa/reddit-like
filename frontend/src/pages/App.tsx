@@ -71,8 +71,7 @@ function App() {
     try {
       setCreating(true);
       const userToken = await userInfo(tokenFromStorage)
-      console.log(userToken)
-      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userToken.id}/posts`, {
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userToken._id}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
