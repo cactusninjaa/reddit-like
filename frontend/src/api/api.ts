@@ -23,15 +23,18 @@ export const signupUser = async (data: any) => {
   return result;
 };
 
-export const logoutUser = async (data: any) => {
+export const logoutUser = async (token: string) => {
   const res = await fetch(`${API_URL}/auth/logout`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-  const result = await res.json()
-  if (!res.ok) throw result
-  return result
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+  });
+
+  const result = await res.json();
+  if (!res.ok) throw result;
+  return result;
 }
 
 export const getUsers = async () => {
