@@ -22,3 +22,14 @@ export const signupUser = async (data: any) => {
   if (!res.ok) throw result;
   return result;
 };
+
+export const logoutUser = async (data: any) => {
+  const res = await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+  const result = await res.json()
+  if (!res.ok) throw result
+  return result
+}
