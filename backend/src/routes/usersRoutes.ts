@@ -31,6 +31,21 @@ router.get("/:token", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await AuthUser.findOne({ _id: id });
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+});
+
 // POST - créer un nouvel utilisateur
 router.post("/", async (req, res) => {
   try {

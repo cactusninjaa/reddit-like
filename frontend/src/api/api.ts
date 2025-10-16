@@ -45,3 +45,13 @@ export const userInfo = async (token: any) => {
   if (!res.ok) throw result;
   return result;
 };
+
+export const userInfoById = async (id: any) => {
+  const res = await fetch(`${API_URL}/users/${id}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const result = await res.json();
+  if (!res.ok) throw result;
+  return result;
+};
