@@ -143,12 +143,12 @@ function ProfilePage() {
                 <div className="profile-info">
                     <img
                         src={userProfile.avatar}
-                        alt={`Avatar de ${user.username}`}
+                        alt={`Avatar de ${user?.username}`}
                         className="profile-avatar"
                     />
                     <div className="profile-details">
-                        <h1>👤 {user.username}</h1>
-                        <p className="profile-email">📧 {user.email}</p>
+                        <h1>👤 {user?.username}</h1>
+                        <p className="profile-email">📧 {user?.email}</p>
                         <div className="profile-stats">
                             <span className="stat">📝 {userPosts.length} post{userPosts.length > 1 ? 's' : ''}</span>
                         </div>
@@ -157,7 +157,7 @@ function ProfilePage() {
             </div>
 
             <div className="profile-content">
-                <h2>📋 Posts de {user.username}</h2>
+                <h2>📋 Posts de {user?.username}</h2>
 
                 {userPosts.length === 0 ? (
                     <div className="no-posts">
