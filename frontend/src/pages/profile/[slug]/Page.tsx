@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import PostCard from '../../../utils/PostCard';
-import { userInfo } from '../../../api/api';
+import { userInfoById } from '../../../api/api';
 import '../../../App.css';
 
 interface Comment {
@@ -48,15 +48,15 @@ function ProfilePage() {
     
     useEffect(() => {
         const fetchUserData = async () => {
-            const tokenFromStorage = localStorage.getItem('authToken');
-            const user = await userInfo(tokenFromStorage)
-            setUser(user)
             if (!slug) return;
-
+            
             try {
                 setLoading(true);
                 setError(null);
-
+                
+                const user = await userInfoById(slug)
+                console.log('Fetched user data:', user);
+                setUser(user)
                 // Récupérer le profil utilisateur
                 const profileResponse = await fetch(`https://reddit-like-backend.vercel.app/api/users/${slug}/posts`, {
                     headers: {
