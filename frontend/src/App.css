@@ -866,3 +866,55 @@
 }
 
 /* ...existing code... */
+
+.stats-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  max-width: 400px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Animation légère au survol */
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stats-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2e1065; /* Indigo foncé */
+  margin-bottom: 20px;
+}
+
+.stats-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: #374151; /* gris neutre */
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.stats-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #7c3aed; /* Violet principal */
+}

@@ -16,9 +16,16 @@ export const login = async (req, res) => {
         if (!isSamePassword)
             throw new Error("Invalid password");
         const token = randomBytes(32).toString("hex");
+        const expiresInHours = 1; // par ex. token valable 1 heure
+        const expirationDate = new Date(Date.now() + expiresInHours * 60 * 60 * 1000);
         user.token = token;
-        user.save();
-        res.status(200).send({ Success: true, token: user.token });
+        user.tokenExpiresAt = expirationDate;
+        await user.save();
+        res.status(200).send({
+            success: true,
+            token: user.token,
+            expiresAt: user.tokenExpiresAt,
+        });
     }
     catch (error) {
         console.log(error);
