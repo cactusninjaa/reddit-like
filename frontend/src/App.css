@@ -522,7 +522,7 @@
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   width: 100%;
-  max-width: 420px;
+  max-width: 800px;
   position: relative;
   overflow: hidden;
 }

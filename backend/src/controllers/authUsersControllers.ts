@@ -71,7 +71,7 @@ export const login = async (req: Request, res: Response) => {
     }
 }
 
-export const signup = (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response) => {
     try {
         const body: SignUpBody = req.body;
 
@@ -82,6 +82,15 @@ export const signup = (req: Request, res: Response) => {
             throw new Error("Please fill all fields")
         }
 
+        const existingEmail = await AuthUser.findOne({ email: body.email });
+        if (existingEmail) {
+            throw new Error( "Email already in use");
+        }
+
+        const existingUsername = await AuthUser.findOne({ username: body.username });
+        if (existingUsername) {
+           throw new Error("Username already taken");
+        }
 
 
         const plainPasword = body.password

@@ -12,30 +12,63 @@ const Signup = () => {
     username: "",
     role: "USER",
   });
+
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Gestion des champs texte
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Gestion du fichier avatar
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+
+      // Preview rapide
+      const reader = new FileReader();
+      reader.onload = () => setAvatarPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Convertir le fichier en Base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const base64String = (reader.result as string).split(",")[1];
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
     try {
-      const res = await signupUser({ ...formData, posts: [] });
-      if (res.Success) {
-        alert("Signup successful");
+      let avatarBase64 = "";
+      if (avatarFile) {
+        avatarBase64 = await fileToBase64(avatarFile);
+      }
+
+      const res = await signupUser({ ...formData, avatar: avatarBase64, posts: [] });
+      if (res.success) {
         navigate("/login");
       }
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message || "Something went wrong");
-      } else {
-        setError("Something went wrong");
-      }
+      if (err instanceof Error) setError(err.message || "Something went wrong");
+      else setError("Something went wrong");
     }
   };
 
@@ -111,6 +144,25 @@ const Signup = () => {
               required
             />
           </div>
+
+          {/* Nouveau champ avatar */}
+          <div className="auth-form-group">
+            <label htmlFor="avatar">Avatar</label>
+            <input
+              id="avatar"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+            />
+            {avatarPreview && (
+              <img
+                src={avatarPreview}
+                alt="Avatar Preview"
+                style={{ marginTop: "8px", width: "80px", height: "80px", objectFit: "cover", borderRadius: "50%" }}
+              />
+            )}
+          </div>
+
           <button type="submit" className="auth-submit-btn">
             ✨ Créer mon compte
           </button>
