@@ -11,6 +11,7 @@ const AuthUserSchema = new mongoose.Schema({
     karma: { type: String, require: false },
     role: { type: String, require: true, default: 'USER' },
     token: { type: String, require: false },
+    tokenExpiresAt: { type: Date, require: false },
     posts: [PostSchema],
 });
 const AuthUser = mongoose.model('AuthUser', AuthUserSchema);

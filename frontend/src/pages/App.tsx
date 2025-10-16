@@ -1,18 +1,26 @@
 import { useState, useEffect } from 'react';
 import '../App.css';
-import Header from '../utils/Header';
-import CreatePostForm from '../utils/CreatePostForm';
-import PostList from '../utils/PostList';
-import type { Post, NewPost } from '../utils/Types';
+import Header from '../components/Header';
+import CreatePostForm from '../components/CreatePostForm';
+import PostList from '../components/PostList';
+import type { Post, NewPost } from '../components/Types';
 import { Navigate } from 'react-router-dom';
+import { getUsers } from '../api/api';
+import { StatsCard } from '../components/StatsCard';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedUserId] = useState<string>('');
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
+
+  const fetchUsers = async () => {
+      const users = await getUsers()
+      setUsers(users)
+  }
 
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
@@ -34,6 +42,7 @@ function App() {
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
+    fetchUsers()
     if (selectedUserId) {
       fetchUserPosts(selectedUserId);
     } else {
@@ -44,7 +53,6 @@ function App() {
   if (!token) {
     return <Navigate to="/login" />;
   }
-
  
   // Récupérer les posts d'un utilisateur spécifique    d
   const fetchUserPosts = async (userId: string) => {
@@ -62,6 +70,7 @@ function App() {
       setLoading(false);
     }
   };
+
 
   // Créer un nouveau post
   const handleCreatePost = async (newPost: NewPost) => {
@@ -103,11 +112,14 @@ function App() {
     setShowCreateForm(!showCreateForm);
   };
 
-  // (moved useEffect above conditional returns)
-
   return (
     <div className="app">
       <div className="container">
+        <StatsCard
+          users={users}
+          posts={posts}
+        />
+
         <Header
           onCreatePost={handleToggleCreateForm}
           showCreateForm={showCreateForm}

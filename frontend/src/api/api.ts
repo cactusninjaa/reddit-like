@@ -33,3 +33,13 @@ export const logoutUser = async (data: any) => {
   if (!res.ok) throw result
   return result
 }
+
+export const getUsers = async () => {
+  const res = await fetch(`${API_URL}/users/`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+  const result = await res.json()
+  if (!res.ok) throw result
+  return result
+}
