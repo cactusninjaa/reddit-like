@@ -26,6 +26,7 @@ type SignUpBody = {
     karma?: string;
     posts: PostsBody[];
     token?: string;
+    tokenExpiresAt: Date,
 }
 
 type LoginBody = {
@@ -52,11 +53,18 @@ export const login = async (req: Request, res: Response) => {
         if (!isSamePassword) throw new Error("Invalid password")
         
         const token = randomBytes(32).toString("hex");
+        const expiresInHours = 1; // par ex. token valable 1 heure
+        const expirationDate = new Date(Date.now() + expiresInHours * 60 * 60 * 1000);
 
-        user.token = token
-        user.save()
+        user.token = token;
+        user.tokenExpiresAt = expirationDate;
+        await user.save();
 
-        res.status(200).send({ Success : true, token: user.token})
+        res.status(200).send({
+            success: true,
+            token: user.token,
+            expiresAt: user.tokenExpiresAt,
+        });    
     } catch (error: any) {
         console.log(error)
         res.status(400).send({  Success : false, error: error.message })    
