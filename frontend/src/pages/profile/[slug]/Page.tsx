@@ -48,14 +48,15 @@ function ProfilePage() {
     
     useEffect(() => {
         const fetchUserData = async () => {
-            const user = await userInfoById(slug)
-            setUser(user)
             if (!slug) return;
-
+            
             try {
                 setLoading(true);
                 setError(null);
-
+                
+                const user = await userInfoById(slug)
+                console.log('Fetched user data:', user);
+                setUser(user)
                 // Récupérer le profil utilisateur
                 const profileResponse = await fetch(`https://reddit-like-backend.vercel.app/api/users/${slug}/posts`, {
                     headers: {
