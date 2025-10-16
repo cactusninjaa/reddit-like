@@ -55,7 +55,7 @@ export const userInfo = async (token: any) => {
 };
 
 export const userInfoById = async (id: any) => {
-  const res = await fetch(`${API_URL}/users/${id}`, {
+  const res = await fetch(`${API_URL}/users/id/${id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
