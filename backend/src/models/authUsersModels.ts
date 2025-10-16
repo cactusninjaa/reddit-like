@@ -2,10 +2,10 @@ import mongoose from 'mongoose'
 import { PostSchema } from './postModels.js'
 
 const AuthUserSchema = new mongoose.Schema({
-    firstName: { type: String, require: true, unique: true },
+    firstName: { type: String, require: true },
     lastName: { type: String, require: true },
     description: { type: String, require: false },
-    email: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
     username: { type: String, require: true },
     avatar: { type: String, require: false },

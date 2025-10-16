@@ -16,11 +16,10 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     if (!user) {
       throw new Error("Invalid token");
     }
-    
+
     if (!user.tokenExpiresAt || user.tokenExpiresAt < new Date()) {
       throw new Error("Token expired");
     }
-
 
     (req as any).user = user;
 

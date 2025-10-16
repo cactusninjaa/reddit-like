@@ -17,6 +17,7 @@ const Login = () => {
       console.log(res)
       if (res.Success) {
         localStorage.setItem("authToken", res.token);
+        localStorage.setItem("expiresAt", res.expiresAt);
         navigate("/");
       }
     } catch (err) {
@@ -28,23 +29,23 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("authToken");
 
-    if (token) {
-      fetch("http://localhost:3000/api/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.Success) {
-            navigate("/main");
-          } else {
-            localStorage.removeItem("authToken");
-          }
-        });
-    }
-  }, [navigate]);
+  //   if (token) {
+  //     fetch("http://localhost:3000/api/me", {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         if (data.Success) {
+  //           navigate("/main");
+  //         } else {
+  //           localStorage.removeItem("authToken");
+  //         }
+  //       });
+  //   }
+  // }, [navigate]);
 
 
   return (
