@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import '../App.css';
-import Header from '../components/Header';
-import CreatePostForm from '../components/CreatePostForm';
-import PostList from '../components/PostList';
-import type { Post, NewPost } from '../components/Types';
+import Header from '../utils/Header';
+import CreatePostForm from '../utils/CreatePostForm';
+import PostList from '../utils/PostList';
+import type { Post, NewPost } from '../utils/Types';
 import { Navigate } from 'react-router-dom';
 import { getUsers } from '../api/api';
-import { StatsCard } from '../components/StatsCard';
+import { StatsCard } from '../utils/StatsCard';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);

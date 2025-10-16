@@ -43,3 +43,13 @@ export const getUsers = async () => {
   if (!res.ok) throw result
   return result
 }
+
+export const userInfo = async (token: any) => {
+  const res = await fetch(`${API_URL}/users/${token}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+  const result = await res.json();
+  if (!res.ok) throw result;
+  return result;
+};

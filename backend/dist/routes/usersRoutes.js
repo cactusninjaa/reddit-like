@@ -13,11 +13,11 @@ router.get("/", async (req, res) => {
         });
     }
 });
-// GET - récupérer un utilisateur par son ID
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
+// GET - récupérer un utilisateur par son token
+router.get("/:token", async (req, res) => {
+    const { token } = req.params;
     try {
-        const user = await AuthUser.findById(id);
+        const user = await AuthUser.findOne({ token: token });
         if (!user) {
             return res.status(404).json({ error: "Utilisateur non trouvé" });
         }
