@@ -118,3 +118,4 @@ export const logout = async (req: Request, res: Response) => {
     res.status(400).send({ Success: false, error: error.message });
   }
 };
+

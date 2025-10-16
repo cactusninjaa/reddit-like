@@ -5,6 +5,7 @@ import CreatePostForm from '../utils/CreatePostForm';
 import PostList from '../utils/PostList';
 import type { Post, NewPost } from '../utils/Types';
 import { Navigate } from 'react-router-dom';
+import {userInfo} from '../api/api';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -14,6 +15,7 @@ function App() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
 
+  const tokenFromStorage = localStorage.getItem('authToken');
   // Récupérer tous les posts
   const fetchAllPosts = async () => {
     try {
@@ -46,7 +48,8 @@ function App() {
   }
 
  
-  // Récupérer les posts d'un utilisateur spécifique    d
+  // Récupérer les posts d'un utilisateur spécifique
+
   const fetchUserPosts = async (userId: string) => {
     try {
       setLoading(true);
@@ -63,11 +66,13 @@ function App() {
     }
   };
 
-  // Créer un nouveau post
+  // Créer un nouveau post 
   const handleCreatePost = async (newPost: NewPost) => {
     try {
       setCreating(true);
-      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/68ef6c0cf6cb6205e18c8dd1/posts`, {
+      const userToken = await userInfo(tokenFromStorage)
+      console.log(userToken)
+      const response = await fetch(`https://reddit-like-backend.vercel.app/api/users/${userToken.id}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
