@@ -874,7 +874,7 @@
   padding: 24px;
   text-align: center;
   margin-bottom: 24px;
-  max-width: 400px;
+  max-width: 800px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -895,9 +895,8 @@
 }
 
 .stats-content {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   color: #374151; /* gris neutre */
 }
 
