@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 interface Comment {
   _id: string;
   content: string;
@@ -19,6 +20,12 @@ interface PostCardProps {
 }
 
 function PostCard({ post }: PostCardProps) {
+  const navigate = useNavigate();
+
+  const handleAuthorClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/profile/${post.userId}`);
+  };
   return (
     <div className="post-card">
       <div className="post-header">
@@ -27,7 +34,9 @@ function PostCard({ post }: PostCardProps) {
           alt={`Avatar de ${post.author}`}
           className="avatar"
         />
-        <span className="author">Par: {post.author}</span>
+        <a href="#" onClick={handleAuthorClick}>
+          <span className="author">Par: {post.author}</span>
+        </a>
       </div>
 
       <h2>{post.title}</h2>
