@@ -28,6 +28,14 @@ interface UserProfile {
     createdAt: string;
 }
 
+interface User {
+    _id: string;
+    username: string;
+    email: string;
+    token: string;
+
+}
+
 function ProfilePage() {
     const { slug } = useParams<{ slug: string }>();
     const navigate = useNavigate();
@@ -35,7 +43,7 @@ function ProfilePage() {
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [user, setUser] = useState<unknown>(null);
+    const [user, setUser] = useState<User | null>(null);
 
     
     useEffect(() => {
