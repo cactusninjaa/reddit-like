@@ -131,6 +131,9 @@ function App() {
     }
   };
 
+  const handlePostDeleted = (postId: string) => {
+    setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+  };
   // 🧭 Toggle du formulaire
   const handleToggleCreateForm = () => setShowCreateForm(!showCreateForm);
   // 🧩 Rendu
@@ -156,7 +159,7 @@ function App() {
           />
         )}
 
-        <PostList posts={posts} loading={loading} error={error} />
+        <PostList posts={posts} loading={loading} error={error}  onPostDeleted={handlePostDeleted}/>
       </div>
     </div>
   );
