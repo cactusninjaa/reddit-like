@@ -72,48 +72,48 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const signup = async (req: Request, res: Response) => {
-    try {
-        const body: SignUpBody = req.body;
+  try {
+    const body: SignUpBody = req.body;
 
-        if (!body) throw new Error("Request body is missing");
+    if (!body) throw new Error("Request body is missing");
 
+    const { firstName, lastName, email, password, username } = body;
 
-        if (!body.firstName || !body.lastName || !body.email || !body.password || !body.username) {
-            throw new Error("Please fill all fields")
-        }
-
-        const existingEmail = await AuthUser.findOne({ email: body.email });
-        if (existingEmail) {
-            throw new Error( "Email already in use");
-        }
-
-        const existingUsername = await AuthUser.findOne({ username: body.username });
-        if (existingUsername) {
-           throw new Error("Username already taken");
-        }
-
-
-        const plainPasword = body.password
-        const hashPassword = bcrypt.hashSync(plainPasword, 10)
-
-        const authuser = AuthUser.insertOne({
-            firstName: body.firstName,
-            lastName: body.lastName,
-            email: body.email,
-            password: hashPassword,
-            role: body.role,
-            username: body.username,
-            avatar: body.avatar,
-            karma: body.karma,
-            posts: body.posts
-        })
-
-        res.status(200).send({ Success : true, authuser })
-    } catch (error: any) {
-        console.log(error)
-        res.status(400).send({  Success : false, error: error.message })
+    if (!firstName || !lastName || !email || !password || !username) {
+      return res.status(400).json({ success: false, message: "Please fill all fields" });
     }
-}
+
+    const existingEmail = await AuthUser.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ success: false, message: "Email already in use" });
+    }
+
+    const existingUsername = await AuthUser.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ success: false, message: "Username already taken" });
+    }
+
+    const hashPassword = bcrypt.hashSync(password, 10);
+
+    const authuser = await AuthUser.create({
+        firstName,
+        lastName,
+        email,
+        password: hashPassword,
+        role: body.role,
+        username,
+        avatar: body.avatar,
+        karma: body.karma,
+        posts: body.posts,
+    });
+
+    return res.status(201).json({ success: true, user: authuser });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 
 export const logout = async (req: Request, res: Response) => {
   try {
