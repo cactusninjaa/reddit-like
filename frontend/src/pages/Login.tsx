@@ -14,7 +14,6 @@ const Login = () => {
     setError("");
     try {
       const res = await loginUser({ email, password });
-      console.log(res)
       if (res.success) {
         localStorage.setItem("authToken", res.token);
         localStorage.setItem("expiresAt", res.expiresAt);
@@ -28,25 +27,6 @@ const Login = () => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken");
-
-  //   if (token) {
-  //     fetch("http://localhost:3000/api/me", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         if (data.Success) {
-  //           navigate("/main");
-  //         } else {
-  //           localStorage.removeItem("authToken");
-  //         }
-  //       });
-  //   }
-  // }, [navigate]);
-
 
   return (
     <div className="auth-container">

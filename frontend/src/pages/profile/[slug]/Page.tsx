@@ -34,7 +34,7 @@ interface User {
     username: string;
     email: string;
     token: string;
-
+    avatar: string;
 }
 
 function ProfilePage() {
@@ -140,10 +140,9 @@ function ProfilePage() {
                 <button onClick={() => navigate('/')} className="back-button">
                     ← Retour
                 </button>
-
                 <div className="profile-info">
                     <img
-                        src={userProfile.avatar}
+                        src={user?.avatar}
                         alt={`Avatar de ${user?.username}`}
                         className="profile-avatar"
                     />

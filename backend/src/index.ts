@@ -17,7 +17,6 @@ mongoose
   .then(() => console.log("✅ Connecté à MongoDB Atlas"))
   .catch((err) => console.error("❌ Erreur MongoDB:", err));
 
-
 app.use(express.json());
 
 app.use("/api", router);
