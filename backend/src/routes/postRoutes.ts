@@ -84,49 +84,11 @@ router.get("/users/:userId/posts/:postId", async (req, res) => {
   }
 });
 
-// POST - créer un nouveau post pour un utilisateur
-router.post("/users/:userId/posts", async (req, res) => {
-  const { userId } = req.params;
-  const { title, description, picture } = req.body;
-
-  try {
-    const user = await AuthUser.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "Utilisateur non trouvé" });
-    }
-
-    const newPost = {
-      title,
-      description,
-      picture,
-      comments: [],
-    };
-
-    user.posts.push(newPost);
-    await user.save();
-
-    const savedPost = user.posts[user.posts.length - 1];
-    const postWithAuthor = {
-      ...savedPost.toObject(),
-      author: user.username,
-      authorAvatar: user.avatar,
-      userId: user._id,
-    };
-
-    res.status(201).json(postWithAuthor);
-  } catch (err) {
-    res.status(500).json({
-      error: err instanceof Error ? err.message : String(err),
-    });
-  }
-});
-
 
 router.delete("/users/:userId/posts/:postId", async (req, res) => {
   const { userId, postId } = req.params;
 
   try {
-    // Récupérer le token depuis l'en-tête Authorization
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: "Token d'authentification manquant" });
@@ -134,25 +96,21 @@ router.delete("/users/:userId/posts/:postId", async (req, res) => {
 
     const token = authHeader.replace('Bearer ', '');
 
-    // Trouver l'utilisateur connecté (celui qui veut supprimer le post)
     const currentUser = await AuthUser.findOne({ token });
     if (!currentUser) {
       return res.status(401).json({ error: "Token invalide ou utilisateur non trouvé" });
     }
 
-    // Trouver l'utilisateur propriétaire du post
     const postOwner = await AuthUser.findById(userId);
     if (!postOwner) {
       return res.status(404).json({ error: "Utilisateur propriétaire du post non trouvé" });
     }
 
-    // Trouver le post
     const post = postOwner.posts.id(postId);
     if (!post) {
       return res.status(404).json({ error: "Post non trouvé" });
     }
 
-    // Vérifier si l'utilisateur connecté est l'auteur du post OU un admin
     const isAuthor = postOwner._id.toString() === currentUser._id.toString();
     const isAdmin = currentUser.role === 'ADMIN';
 
@@ -162,7 +120,6 @@ router.delete("/users/:userId/posts/:postId", async (req, res) => {
       });
     }
 
-    // Supprimer le post
     postOwner.posts.pull(postId);
     await postOwner.save();
 
@@ -180,7 +137,6 @@ router.delete("/users/:userId/posts/:postId", async (req, res) => {
   }
 });
 
-// POST - ajouter un commentaire à un post
 router.post("/users/:userId/posts/:postId/comments", async (req, res) => {
   const { userId, postId } = req.params;
   const { content, username } = req.body;
@@ -210,7 +166,6 @@ router.post("/users/:userId/posts/:postId/comments", async (req, res) => {
 });
 
 
-// DELETE - supprimer un commentaire (uniquement par l'auteur)
 router.delete("/users/:userId/posts/:postId/comments/:commentId", async (req, res) => {
   const { userId, postId, commentId } = req.params;
 
@@ -248,7 +203,6 @@ router.delete("/users/:userId/posts/:postId/comments/:commentId", async (req, re
       return res.status(404).json({ error: "Commentaire non trouvé" });
     }
 
-    // Vérifier si l'utilisateur connecté est l'auteur du commentaire OU un admin
     const isAuthor = comment.username === currentUser.username;
     const isAdmin = currentUser.role === "ADMIN";
 
