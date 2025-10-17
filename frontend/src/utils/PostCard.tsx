@@ -1,5 +1,5 @@
 // Dans frontend/src/utils/PostCard.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userInfo, deleteComment } from '../api/api';
 import type { Comment, Post } from './Types';
@@ -15,21 +15,23 @@ function PostCard({ post }: PostCardProps) {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUsername, setCurrentUsername] = useState<string>('');
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  useState(() => {
+  useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
         const token = localStorage.getItem('authToken');
         if (token) {
           const userInfos = await userInfo(token);
           setCurrentUsername(userInfos.username);
+          setIsAdmin(userInfos.role === 'ADMIN');
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des infos utilisateur:', error);
       }
     };
     fetchCurrentUser();
-  });
+  }, []);
 
   const handleAuthorClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -80,21 +82,35 @@ function PostCard({ post }: PostCardProps) {
     }
   };
 
-  const handleDeleteComment = async (commentId: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
+  const handleDeleteComment = async (commentId: string, commentUsername: string) => {
+    const isAuthor = currentUsername === commentUsername;
+    const deleteMessage = isAdmin && !isAuthor
+      ? `Êtes-vous sûr de vouloir supprimer ce commentaire de ${commentUsername} ? (Suppression en tant qu'administrateur)`
+      : 'Êtes-vous sûr de vouloir supprimer ce commentaire ?';
+
+    if (!window.confirm(deleteMessage)) {
       return;
     }
 
     try {
-      await deleteComment(post.userId, post._id, commentId);
-      
+      const result = await deleteComment(post.userId, post._id, commentId);
+
       setComments(comments.filter(comment => comment._id !== commentId));
-      
-      alert('Commentaire supprimé avec succès');
+
+      const successMessage = result.deletedBy === 'admin'
+        ? 'Commentaire supprimé avec succès (par l\'administrateur)'
+        : 'Commentaire supprimé avec succès';
+
+      alert(successMessage);
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
       alert(error instanceof Error ? error.message : 'Erreur lors de la suppression du commentaire');
     }
+  };
+
+  // Fonction pour déterminer si l'utilisateur peut supprimer un commentaire
+  const canDeleteComment = (commentUsername: string) => {
+    return currentUsername === commentUsername || isAdmin;
   };
 
   return (
@@ -147,14 +163,18 @@ function PostCard({ post }: PostCardProps) {
             <div className="comment-content">
               <p><strong>{comment.username}:</strong> {comment.content}</p>
             </div>
-            {currentUsername === comment.username && (
+            {canDeleteComment(comment.username) && (
               <div className="comment-actions">
-                <button 
-                  onClick={() => handleDeleteComment(comment._id)}
-                  className="delete-comment-btn"
-                  title="Supprimer ce commentaire"
+                <button
+                  onClick={() => handleDeleteComment(comment._id, comment.username)}
+                  className={`delete-comment-btn ${isAdmin && currentUsername !== comment.username ? 'admin-delete' : ''}`}
+                  title={
+                    isAdmin && currentUsername !== comment.username
+                      ? "Supprimer ce commentaire (Admin)"
+                      : "Supprimer ce commentaire"
+                  }
                 >
-                  🗑️ Supprimer
+                  {isAdmin && currentUsername !== comment.username ? '👑🗑️ Supprimer (Admin)' : '🗑️ Supprimer'}
                 </button>
               </div>
             )}
