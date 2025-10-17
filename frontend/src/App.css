@@ -218,6 +218,9 @@
 
 .post-actions {
   margin: 20px 0;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .post-actions button {
@@ -1546,4 +1549,23 @@
   80% {
     transform: translateY(-1px);
   }
+}
+
+/* Style pour le message "aucun commentaire" */
+.no-comments {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  background: #f8faff;
+  border-radius: 12px;
+  border: 2px dashed var(--border-light);
+  margin: 16px 0;
+}
+
+.no-comments::before {
+  content: "💭";
+  font-size: 1.5em;
+  display: block;
+  margin-bottom: 8px;
 }
