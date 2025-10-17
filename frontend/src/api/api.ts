@@ -66,3 +66,22 @@ export const userInfoById = async (id: any) => {
   if (!res.ok) throw result;
   return result;
 };
+
+export const deleteComment = async (userId: string, postId: string, commentId: string) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('Token d\'authentification manquant');
+  }
+
+  const res = await fetch(`${API_URL}/users/${userId}/posts/${postId}/comments/${commentId}`, {
+    method: "DELETE",
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+  });
+  
+  const result = await res.json();
+  if (!res.ok) throw new Error(result.error || 'Erreur lors de la suppression');
+  return result;
+};
