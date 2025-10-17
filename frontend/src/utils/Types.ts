@@ -1,6 +1,7 @@
 export interface Comment {
   _id: string;
   content: string;
+  username: string;
 }
 
 export interface Post {
