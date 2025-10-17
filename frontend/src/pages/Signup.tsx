@@ -56,7 +56,6 @@ const Signup = () => {
 
       if (avatarFile) {
         const base64 = await fileToBase64(avatarFile);
-        console.log(base64)
 
         const mimeType = avatarFile.type || "image/jpeg";
 
