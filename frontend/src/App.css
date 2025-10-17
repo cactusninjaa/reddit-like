@@ -1,4 +1,23 @@
-/* Layout principal */
+/* ==========================================================================
+   Variables CSS
+   ========================================================================== */
+:root {
+  --primary-color: #4f46e5;
+  --secondary-color: #7c3aed;
+  --accent-color: #ec4899;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --surface: #f8fafc;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+}
+
+/* ==========================================================================
+   Layout principal
+   ========================================================================== */
 .app {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -10,7 +29,9 @@
   padding: 24px;
 }
 
-/* Header */
+/* ==========================================================================
+   Header
+   ========================================================================== */
 .header {
   background: white;
   border-radius: 16px;
@@ -21,7 +42,7 @@
 }
 
 .header h1 {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -46,13 +67,17 @@
 }
 
 .create-post-btn {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   padding: 12px 24px;
   font-weight: 600;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Posts */
+/* ==========================================================================
+   Posts
+   ========================================================================== */
 .posts-container {
   display: flex;
   flex-direction: column;
@@ -77,7 +102,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), #7c3aed, #ec4899);
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
 }
 
 .post-card:hover {
@@ -85,13 +110,24 @@
   box-shadow: var(--shadow-lg);
 }
 
+.post-card:hover .avatar {
+  animation: pulse 2s infinite;
+}
+
 .post-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-light);
+}
+
+.post-author-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
 }
 
 .avatar {
@@ -112,6 +148,22 @@
   font-weight: 600;
   color: var(--text-primary);
   font-size: 0.875rem;
+}
+
+.author-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+.author-link:hover {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
 .post-card h2 {
@@ -136,6 +188,94 @@
   margin: 16px 0;
   border-radius: 12px;
   border: 1px solid var(--border-light);
+}
+
+.post-actions {
+  margin: 20px 0;
+}
+
+.post-actions button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-actions button::before {
+  content: '💬';
+  font-size: 16px;
+}
+
+.post-actions button:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.post-actions button:hover::before {
+  animation: bounce 0.6s ease;
+}
+
+/* Actions d'administration */
+.post-actions-header {
+  display: flex;
+  gap: 5px;
+}
+
+.delete-post-btn {
+  background: #fed7d7;
+  color: #c53030;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+}
+
+.delete-post-btn:hover {
+  background: #feb2b2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(197, 48, 48, 0.3);
+}
+
+.delete-post-btn.admin-delete {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #744210;
+  font-weight: bold;
+  border: 2px solid #daa520;
+}
+
+.delete-post-btn.admin-delete:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffd700);
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.4);
+}
+
+.admin-badge {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #744210;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 10px;
+  box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
 }
 
 /* Section des commentaires */
@@ -1092,4 +1232,267 @@
   .post-actions-header {
     justify-content: center;
   }
+}
+
+/* Styles pour le formulaire de commentaire */
+.comment-form {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.comment-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  border-radius: 16px 16px 0 0;
+}
+
+.comment-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e0;
+}
+
+.comment-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.3s ease;
+  background: white;
+  color: #2d3748;
+  box-sizing: border-box;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #fefeff;
+  box-shadow: 
+    0 0 0 4px rgba(102, 126, 234, 0.1),
+    0 4px 12px rgba(102, 126, 234, 0.15);
+  transform: translateY(-1px);
+}
+
+.comment-form textarea::placeholder {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+.comment-form textarea:disabled {
+  background: #f7fafc;
+  color: #a0aec0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.comment-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.comment-form button {
+  position: relative;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.comment-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.comment-form button:hover::before {
+  left: 100%;
+}
+
+.comment-form button:last-child {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.comment-form button:last-child:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.comment-form button:last-child:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+}
+
+.comment-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.comment-form button:disabled::before {
+  display: none;
+}
+
+/* Animation d'apparition du formulaire */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comment-form {
+  animation: slideInUp 0.4s ease-out;
+}
+
+/* Styles responsive */
+@media (max-width: 768px) {
+  .comment-form {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .comment-form textarea {
+    min-height: 80px;
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .comment-form-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  
+  .comment-form button {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+}
+
+/* Effet de focus pour l'accessibilité */
+.comment-form button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Icônes animées pour les boutons */
+.comment-form button:last-child::after {
+  content: '💬';
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+
+.comment-form button:last-child:hover::after {
+  transform: scale(1.2) rotate(10deg);
+}
+
+/* Compteur de caractères */
+.comment-counter {
+  font-size: 12px;
+  color: #718096;
+  font-weight: 500;
+}
+
+.comment-counter .warning {
+  color: #e53e3e;
+  font-weight: bold;
+}
+
+.comment-counter .normal {
+  color: #718096;
+}
+
+/* Animation de chargement */
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Amélioration du bouton "Commenter" principal */
+.post-actions button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-actions button:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.post-actions button::before {
+  content: '💬';
+  font-size: 16px;
+}
+
+.post-actions button:hover::before {
+  animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+  0%, 20%, 60%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-3px); }
+  80% { transform: translateY(-1px); }
 }

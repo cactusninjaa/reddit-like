@@ -201,15 +201,31 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Écrivez votre commentaire..."
+            placeholder="💭 Partagez votre opinion, posez une question, ou réagissez à ce post..."
             disabled={isSubmitting}
+            maxLength={500}
           />
-          <button
-            onClick={handleAddComment}
-            disabled={isSubmitting || !newComment.trim()}
-          >
-            {isSubmitting ? 'Envoi...' : 'Publier'}
-          </button>
+          <div className="comment-form-actions">
+            <div className="comment-counter">
+              <span className={newComment.length > 400 ? 'warning' : 'normal'}>
+                {newComment.length}/500
+              </span>
+            </div>
+            <button
+              onClick={handleAddComment}
+              disabled={isSubmitting || !newComment.trim()}
+              type="button"
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="loading-spinner"></span>
+                  Publication...
+                </>
+              ) : (
+                'Publier'
+              )}
+            </button>
+          </div>
         </div>
       )}
 
