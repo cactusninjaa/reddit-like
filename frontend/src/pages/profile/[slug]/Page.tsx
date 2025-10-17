@@ -7,6 +7,7 @@ import '../../../App.css';
 interface Comment {
     _id: string;
     content: string;
+    username: string;
 }
 
 interface Post {
