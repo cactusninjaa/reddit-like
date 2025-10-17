@@ -22,7 +22,6 @@ function App() {
   const navigate = useNavigate();
   const token = localStorage.getItem("authToken");
 
-  // 🧹 Gestion de la déconnexion
   const handleLogout = async () => {
     try {
       if (token) await logoutUser(token);
@@ -35,7 +34,6 @@ function App() {
     }
   };
 
-  // 🧍‍♂️ Charger les infos de l'utilisateur connecté
   const fetchUserInfo = async () => {
     if (!token) return;
     try {
@@ -43,11 +41,10 @@ function App() {
       setUserConnected(result);
     } catch (error) {
       console.error("Token invalide ou expiré :", error);
-      handleLogout(); // auto-déconnexion si token invalide
+      handleLogout();
     }
   };
 
-  // 👥 Récupérer les utilisateurs
   const fetchUsers = async () => {
     try {
       const users = await getUsers();
@@ -57,13 +54,12 @@ function App() {
     }
   };
 
-  // 📝 Récupérer tous les posts
   const fetchAllPosts = async () => {
     try {
       setLoading(true);
       const response = await fetch('https://reddit-like-backend.vercel.app/api/posts');
       if (!response.ok) throw new Error('Erreur lors de la récupération des posts');
-      const data = await response.json();
+      const data = await response.json(); 
       setPosts(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
@@ -72,7 +68,6 @@ function App() {
     }
   };
 
-  // 👤 Récupérer les posts d'un utilisateur spécifique
   const fetchUserPosts = async (userId: string) => {
     try {
       setLoading(true);
@@ -87,9 +82,8 @@ function App() {
     }
   };
 
-  // 🧠 Chargement initial
   useEffect(() => {
-    if (!token) return; // redirection gérée plus bas
+    if (!token) return; 
 
     fetchUserInfo();
     fetchUsers();
@@ -98,12 +92,10 @@ function App() {
     else fetchAllPosts();
   }, [selectedUserId, token]);
 
-  // 🔒 Si pas de token => redirection
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  // ➕ Création d’un post
   const handleCreatePost = async (newPost: NewPost) => {
     try {
       setCreating(true);
@@ -119,7 +111,6 @@ function App() {
 
       if (!response.ok) throw new Error('Erreur lors de la création du post');
 
-      // Rafraîchir les posts
       if (selectedUserId) fetchUserPosts(selectedUserId);
       else fetchAllPosts();
 
@@ -131,10 +122,8 @@ function App() {
     }
   };
 
-  // 🧭 Toggle du formulaire
   const handleToggleCreateForm = () => setShowCreateForm(!showCreateForm);
 
-  // 🧩 Rendu
   return (
     <div className="app">
       <div className="container">
@@ -146,7 +135,7 @@ function App() {
           onCreatePost={handleToggleCreateForm}
           showCreateForm={showCreateForm}
           token={token}
-          onLogout={handleLogout} // 👈 on passe la déconnexion ici
+          onLogout={handleLogout}
         />
 
         {showCreateForm && (
