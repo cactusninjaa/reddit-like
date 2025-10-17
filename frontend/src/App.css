@@ -31,12 +31,15 @@
   font-weight: 800;
 }
 
+
+
 .filter-section {
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  
 }
 
 .filter-section input {
@@ -47,6 +50,13 @@
 
 .create-post-btn {
   background: linear-gradient(135deg, var(--primary-color) 0%, #7c3aed 100%);
+  padding: 12px 24px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.delete-button {
+  background: red;
   padding: 12px 24px;
   font-weight: 600;
   white-space: nowrap;

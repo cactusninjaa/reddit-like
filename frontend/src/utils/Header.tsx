@@ -6,9 +6,10 @@ interface HeaderProps {
   token: string;
   showCreateForm: boolean;
   onLogout: () => void;
+  userConnected: any;
 }
 
-function Header({ onCreatePost, showCreateForm, token, onLogout }: HeaderProps) {
+function Header({ onCreatePost, showCreateForm, token, onLogout, userConnected }: HeaderProps) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -22,14 +23,28 @@ function Header({ onCreatePost, showCreateForm, token, onLogout }: HeaderProps) 
     }
   };
 
+
+  const handleAuthorClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/profile/${userConnected._id}`);
+  };
+
   return (
     <div className="header">
-      <h1>Reddit-like Posts</h1>
+      <div className="filter-section">
+        <img
+            src={userConnected.avatar}
+            alt={`Avatar de ${userConnected.firstName}`}
+            className="avatar"
+        />
+        <h1>Hello {userConnected.firstName}</h1>
+      </div>
       <div className="filter-section">
         <button className="create-post-btn" onClick={onCreatePost}>
           {showCreateForm ? "Annuler" : "Créer un post"}
         </button>
-        <button onClick={handleLogout}>Déconnecter</button>
+        <button className="delete-button" onClick={handleLogout}>Déconnecter</button>
+        <button onClick={handleAuthorClick}>Voir mon profil</button>
       </div>
     </div>
   );
