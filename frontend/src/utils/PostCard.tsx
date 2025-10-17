@@ -115,7 +115,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
     const isAuthor = currentUserId === post.userId;
     const deleteMessage = isAdmin && !isAuthor
       ? `Êtes-vous sûr de vouloir supprimer ce post de ${post.author} ? (Suppression en tant qu'administrateur)\n\nTitre: ${post.title}`
-      : `Êtes-vous sûr de vouloir supprimer ce post ?\n\nTitre: ${post.title}`;
+      : `Êtes-vous sûr de vouloir supprimer ce post ?`;
 
     if (!window.confirm(deleteMessage)) {
       return;
@@ -163,11 +163,6 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
           <a href="#" onClick={handleAuthorClick}>
             <span className="author">Par: {post.author}</span>
           </a>
-          {isAdmin && (
-            <span className="admin-badge" title="Vous êtes administrateur">
-              👑 Admin
-            </span>
-          )}
         </div>
         
         {/* Bouton de suppression du post */}
@@ -182,7 +177,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
                   : "Supprimer ce post"
               }
             >
-              {isAdmin && currentUserId !== post.userId ? '👑🗑️' : '🗑️'}
+              🗑️
             </button>
           </div>
         )}
@@ -236,7 +231,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
                       : "Supprimer ce commentaire"
                   }
                 >
-                  {isAdmin && currentUsername !== comment.username ? '👑🗑️ Supprimer (Admin)' : '🗑️ Supprimer'}
+                  🗑️  
                 </button>
               </div>
             )}

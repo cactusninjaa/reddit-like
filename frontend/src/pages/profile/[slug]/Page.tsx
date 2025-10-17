@@ -56,7 +56,6 @@ function ProfilePage() {
                 setError(null);
                 
                 const user = await userInfoById(slug)
-                console.log('Fetched user data:', user);
                 setUser(user)
                 // Récupérer le profil utilisateur
                 const profileResponse = await fetch(`https://reddit-like-backend.vercel.app/api/users/${slug}/posts`, {
