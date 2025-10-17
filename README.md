@@ -106,6 +106,14 @@ Les routes backend sont montées sous `/api`. Parmi les endpoints implémentés 
 - `POST /api/auth/signup` — création d'utilisateur
 - `POST /api/auth/login` — authentification (retourne un token)
 - `POST /api/auth/logout` — déconnexion
+- `GET /api/users`
+- `GET /api/users/:token`
+- `GET /api/users/id/:id`
+- `POST /api/users/:id/posts`
+- `GET /api/users/:userId/posts/:postId`
+- `DELETE /api/users/:userId/posts/:postId`
+- `POST /api/users/:userId/posts/:postId/comments`
+- `DELETE /api/users/:userId/posts/:postId/comments/:commentId`
 
 Consultez `backend/src/routes.ts` et `backend/src/controllers/` pour la liste complète et la logique.
 
