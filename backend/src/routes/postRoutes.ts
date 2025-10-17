@@ -121,6 +121,65 @@ router.post("/users/:userId/posts", async (req, res) => {
   }
 });
 
+
+router.delete("/users/:userId/posts/:postId", async (req, res) => {
+  const { userId, postId } = req.params;
+
+  try {
+    // Récupérer le token depuis l'en-tête Authorization
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: "Token d'authentification manquant" });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+
+    // Trouver l'utilisateur connecté (celui qui veut supprimer le post)
+    const currentUser = await AuthUser.findOne({ token });
+    if (!currentUser) {
+      return res.status(401).json({ error: "Token invalide ou utilisateur non trouvé" });
+    }
+
+    // Trouver l'utilisateur propriétaire du post
+    const postOwner = await AuthUser.findById(userId);
+    if (!postOwner) {
+      return res.status(404).json({ error: "Utilisateur propriétaire du post non trouvé" });
+    }
+
+    // Trouver le post
+    const post = postOwner.posts.id(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post non trouvé" });
+    }
+
+    // Vérifier si l'utilisateur connecté est l'auteur du post OU un admin
+    const isAuthor = postOwner._id.toString() === currentUser._id.toString();
+    const isAdmin = currentUser.role === 'ADMIN';
+
+    if (!isAuthor && !isAdmin) {
+      return res.status(403).json({ 
+        error: "Vous n'êtes pas autorisé à supprimer ce post. Seul l'auteur ou un administrateur peut le supprimer." 
+      });
+    }
+
+    // Supprimer le post
+    postOwner.posts.pull(postId);
+    await postOwner.save();
+
+    res.status(200).json({ 
+      message: "Post supprimé avec succès",
+      deletedPostId: postId,
+      deletedBy: isAdmin && !isAuthor ? 'admin' : 'author'
+    });
+
+  } catch (err) {
+    console.error('Erreur lors de la suppression du post:', err);
+    res.status(500).json({
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+});
+
 // POST - ajouter un commentaire à un post
 router.post("/users/:userId/posts/:postId/comments", async (req, res) => {
   const { userId, postId } = req.params;

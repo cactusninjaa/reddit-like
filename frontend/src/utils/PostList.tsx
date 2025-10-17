@@ -21,9 +21,10 @@ interface PostListProps {
   posts: Post[];
   loading: boolean;
   error: string | null;
+  onPostDeleted?: (postId: string) => void;
 }
 
-function PostList({ posts, loading, error }: PostListProps) {
+function PostList({ posts, loading, error, onPostDeleted }: PostListProps) {
   if (loading) {
     return (
       <div className="loading">
@@ -51,7 +52,7 @@ function PostList({ posts, loading, error }: PostListProps) {
         </div>
       ) : (
         posts.map((post) => (
-          <PostCard key={post._id} post={post} />
+          <PostCard key={post._id} post={post} onPostDeleted={onPostDeleted} />
         ))
       )}
     </div>
