@@ -12,7 +12,8 @@
   --border: #e5e7eb;
   --border-light: #f3f4f6;
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 10px 10px -5px rgb(0 0 0 / 0.04);
 }
 
 /* ==========================================================================
@@ -42,7 +43,11 @@
 }
 
 .header h1 {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -67,7 +72,11 @@
 }
 
 .create-post-btn {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   padding: 12px 24px;
   font-weight: 600;
   white-space: nowrap;
@@ -102,7 +111,12 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color),
+    var(--accent-color)
+  );
 }
 
 .post-card:hover {
@@ -160,7 +174,11 @@
 }
 
 .author-link:hover {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
@@ -195,7 +213,11 @@
 }
 
 .post-actions button {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: white;
   border: none;
   padding: 12px 24px;
@@ -213,7 +235,7 @@
 }
 
 .post-actions button::before {
-  content: '💬';
+  content: "💬";
   font-size: 16px;
 }
 
@@ -928,8 +950,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-container h2 {
@@ -962,21 +988,21 @@
   .profile-page {
     padding: 15px;
   }
-  
+
   .profile-info {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .profile-avatar {
     width: 100px;
     height: 100px;
   }
-  
+
   .profile-details h1 {
     font-size: 2em;
   }
-  
+
   .profile-header {
     padding: 20px;
   }
@@ -1030,14 +1056,14 @@
 .stats-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2e1065; 
+  color: #2e1065;
   margin-bottom: 20px;
 }
 
 .stats-content {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  color: #374151; 
+  color: #374151;
 }
 
 .stats-item {
@@ -1055,7 +1081,7 @@
 .stats-value {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #7c3aed; 
+  color: #7c3aed;
 }
 
 .comment {
@@ -1224,11 +1250,11 @@
     gap: 10px;
     align-items: stretch;
   }
-  
+
   .post-author-info {
     justify-content: center;
   }
-  
+
   .post-actions-header {
     justify-content: center;
   }
@@ -1248,7 +1274,7 @@
 }
 
 .comment-form::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1284,8 +1310,7 @@
   outline: none;
   border-color: #667eea;
   background: #fefeff;
-  box-shadow: 
-    0 0 0 4px rgba(102, 126, 234, 0.1),
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1),
     0 4px 12px rgba(102, 126, 234, 0.15);
   transform: translateY(-1px);
 }
@@ -1327,13 +1352,18 @@
 }
 
 .comment-form button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -1392,18 +1422,18 @@
     padding: 16px;
     margin: 16px 0;
   }
-  
+
   .comment-form textarea {
     min-height: 80px;
     padding: 12px;
     font-size: 14px;
   }
-  
+
   .comment-form-actions {
     flex-direction: column-reverse;
     gap: 8px;
   }
-  
+
   .comment-form button {
     width: 100%;
     justify-content: center;
@@ -1419,7 +1449,7 @@
 
 /* Icônes animées pour les boutons */
 .comment-form button:last-child::after {
-  content: '💬';
+  content: "💬";
   margin-left: 4px;
   transition: transform 0.3s ease;
 }
@@ -1455,8 +1485,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Amélioration du bouton "Commenter" principal */
@@ -1483,7 +1517,7 @@
 }
 
 .post-actions button::before {
-  content: '💬';
+  content: "💬";
   font-size: 16px;
 }
 
@@ -1492,7 +1526,16 @@
 }
 
 @keyframes bounce {
-  0%, 20%, 60%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-3px); }
-  80% { transform: translateY(-1px); }
+  0%,
+  20%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+  80% {
+    transform: translateY(-1px);
+  }
 }
