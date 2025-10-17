@@ -2,6 +2,10 @@
 
 > Application fullstack TypeScript/Node + React inspirée de Reddit — projet d'hackathon.
 
+## Groupe 
+Rphaël CHICHE
+Thomas SAUVAGE
+
 ## Description
 
 Ce dépôt contient une API backend en TypeScript (Express + Mongoose) et un frontend en React (Vite + TypeScript). Le backend sert une API REST pour l'authentification, la gestion des posts et des commentaires. Le frontend consomme cette API et fournit une interface utilisateur minimale (inscription, connexion, création et affichage de posts/profils).
