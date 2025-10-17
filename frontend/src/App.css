@@ -57,12 +57,15 @@
   font-weight: 800;
 }
 
+
+
 .filter-section {
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  
 }
 
 .filter-section input {
@@ -84,9 +87,14 @@
   overflow: hidden;
 }
 
-/* ==========================================================================
-   Posts
-   ========================================================================== */
+
+.delete-button {
+  background: red;
+  padding: 12px 24px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .posts-container {
   display: flex;
   flex-direction: column;
