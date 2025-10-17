@@ -3,6 +3,7 @@ import PostCard from './PostCard';
 interface Comment {
   _id: string;
   content: string;
+  username: string;
 }
 
 interface Post {

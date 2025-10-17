@@ -110,7 +110,7 @@ router.post("/users/:userId/posts", async (req, res) => {
 // POST - ajouter un commentaire à un post
 router.post("/users/:userId/posts/:postId/comments", async (req, res) => {
     const { userId, postId } = req.params;
-    const { content } = req.body;
+    const { content, username } = req.body;
     try {
         const user = await AuthUser.findById(userId);
         if (!user) {
@@ -120,7 +120,7 @@ router.post("/users/:userId/posts/:postId/comments", async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: "Post non trouvé" });
         }
-        const newComment = { content };
+        const newComment = { content, username };
         post.comments.push(newComment);
         await user.save();
         const savedComment = post.comments[post.comments.length - 1];
