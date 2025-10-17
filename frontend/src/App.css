@@ -954,3 +954,63 @@
 .delete-comment-btn:active {
   transform: translateY(0);
 }
+
+.admin-badge {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #744210;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-left: 10px;
+  box-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+}
+
+.comment {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #f8fafc;
+}
+
+.comment-content {
+  margin-bottom: 8px;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-comment-btn {
+  background: #fed7d7;
+  color: #c53030;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-comment-btn:hover {
+  background: #feb2b2;
+  transform: translateY(-1px);
+}
+
+.delete-comment-btn.admin-delete {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #744210;
+  font-weight: bold;
+  border: 2px solid #daa520;
+}
+
+.delete-comment-btn.admin-delete:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffd700);
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.4);
+}
+
+.delete-comment-btn:active {
+  transform: translateY(0);
+}

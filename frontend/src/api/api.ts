@@ -1,4 +1,4 @@
-const API_URL = "https://reddit-like-backend.vercel.app/api";
+const API_URL = "http://localhost:3000/api";
 
 
 export const loginUser = async (data: { email: string; password: string }) => {
