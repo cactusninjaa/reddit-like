@@ -6,7 +6,7 @@ import type { Comment, Post } from './Types';
 
 interface PostCardProps {
   post: Post;
-  onPostDeleted?: (postId: string) => void; 
+  onPostDeleted?: (postId: string) => void;
 }
 
 function PostCard({ post, onPostDeleted }: PostCardProps) {
@@ -14,6 +14,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
   const [comments, setComments] = useState<Comment[]>(post.comments);
   const [newComment, setNewComment] = useState('');
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUsername, setCurrentUsername] = useState<string>('');
   const [currentUserId, setCurrentUserId] = useState<string>('');
@@ -164,7 +165,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
             <span className="author">Par: {post.author}</span>
           </a>
         </div>
-        
+
         {/* Bouton de suppression du post */}
         {canDeletePost() && (
           <div className="post-actions-header">
@@ -191,6 +192,9 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
       )}
 
       <div className="post-actions">
+        <button onClick={() => setShowComments(!showComments)}>
+          {showComments ? 'Masquer les commentaires' : `Voir les commentaires (${comments.length})`}
+        </button>
         <button onClick={() => setShowCommentForm(!showCommentForm)}>
           {showCommentForm ? 'Annuler' : 'Commenter'}
         </button>
@@ -229,31 +233,37 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
         </div>
       )}
 
-      <div className="comments-section">
-        <h4>Commentaires ({comments.length})</h4>
-        {comments.map((comment) => (
-          <div key={comment._id} className="comment">
-            <div className="comment-content">
-              <p><strong>{comment.username}:</strong> {comment.content}</p>
-            </div>
-            {canDeleteComment(comment.username) && (
-              <div className="comment-actions">
-                <button
-                  onClick={() => handleDeleteComment(comment._id, comment.username)}
-                  className={`delete-comment-btn ${isAdmin && currentUsername !== comment.username ? 'admin-delete' : ''}`}
-                  title={
-                    isAdmin && currentUsername !== comment.username
-                      ? "Supprimer ce commentaire (Admin)"
-                      : "Supprimer ce commentaire"
-                  }
-                >
-                  🗑️  
-                </button>
+      {showComments && (
+        <div className="comments-section">
+          <h4>Commentaires ({comments.length})</h4>
+          {comments.length === 0 ? (
+            <p className="no-comments">Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment._id} className="comment">
+                <div className="comment-content">
+                  <p><strong>{comment.username}:</strong> {comment.content}</p>
+                </div>
+                {canDeleteComment(comment.username) && (
+                  <div className="comment-actions">
+                    <button
+                      onClick={() => handleDeleteComment(comment._id, comment.username)}
+                      className={`delete-comment-btn ${isAdmin && currentUsername !== comment.username ? 'admin-delete' : ''}`}
+                      title={
+                        isAdmin && currentUsername !== comment.username
+                          ? "Supprimer ce commentaire (Admin)"
+                          : "Supprimer ce commentaire"
+                      }
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
