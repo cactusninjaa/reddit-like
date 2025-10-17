@@ -1,20 +1,22 @@
 // Dans frontend/src/utils/PostCard.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userInfo, deleteComment } from '../api/api';
+import { userInfo, deleteComment, deletePost } from '../api/api';
 import type { Comment, Post } from './Types';
 
 interface PostCardProps {
   post: Post;
+  onPostDeleted?: (postId: string) => void; 
 }
 
-function PostCard({ post }: PostCardProps) {
+function PostCard({ post, onPostDeleted }: PostCardProps) {
   const navigate = useNavigate();
   const [comments, setComments] = useState<Comment[]>(post.comments);
   const [newComment, setNewComment] = useState('');
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUsername, setCurrentUsername] = useState<string>('');
+  const [currentUserId, setCurrentUserId] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
@@ -24,6 +26,7 @@ function PostCard({ post }: PostCardProps) {
         if (token) {
           const userInfos = await userInfo(token);
           setCurrentUsername(userInfos.username);
+          setCurrentUserId(userInfos._id);
           setIsAdmin(userInfos.role === 'ADMIN');
         }
       } catch (error) {
@@ -108,9 +111,44 @@ function PostCard({ post }: PostCardProps) {
     }
   };
 
+  const handleDeletePost = async () => {
+    const isAuthor = currentUserId === post.userId;
+    const deleteMessage = isAdmin && !isAuthor
+      ? `Êtes-vous sûr de vouloir supprimer ce post de ${post.author} ? (Suppression en tant qu'administrateur)\n\nTitre: ${post.title}`
+      : `Êtes-vous sûr de vouloir supprimer ce post ?\n\nTitre: ${post.title}`;
+
+    if (!window.confirm(deleteMessage)) {
+      return;
+    }
+
+    try {
+      const result = await deletePost(post.userId, post._id);
+
+      const successMessage = result.deletedBy === 'admin'
+        ? 'Post supprimé avec succès (par l\'administrateur)'
+        : 'Post supprimé avec succès';
+
+      alert(successMessage);
+
+      // Notifier le parent pour mettre à jour la liste des posts
+      if (onPostDeleted) {
+        onPostDeleted(post._id);
+      }
+
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      alert(error instanceof Error ? error.message : 'Erreur lors de la suppression du post');
+    }
+  };
+
   // Fonction pour déterminer si l'utilisateur peut supprimer un commentaire
   const canDeleteComment = (commentUsername: string) => {
     return currentUsername === commentUsername || isAdmin;
+  };
+
+  // Fonction pour déterminer si l'utilisateur peut supprimer le post
+  const canDeletePost = () => {
+    return currentUserId === post.userId || isAdmin;
   };
 
   return (
@@ -121,9 +159,33 @@ function PostCard({ post }: PostCardProps) {
           alt={`Avatar de ${post.author}`}
           className="avatar"
         />
-        <a href="#" onClick={handleAuthorClick}>
-          <span className="author">Par: {post.author}</span>
-        </a>
+        <div className="post-author-info">
+          <a href="#" onClick={handleAuthorClick}>
+            <span className="author">Par: {post.author}</span>
+          </a>
+          {isAdmin && (
+            <span className="admin-badge" title="Vous êtes administrateur">
+              👑 Admin
+            </span>
+          )}
+        </div>
+        
+        {/* Bouton de suppression du post */}
+        {canDeletePost() && (
+          <div className="post-actions-header">
+            <button
+              onClick={handleDeletePost}
+              className={`delete-post-btn ${isAdmin && currentUserId !== post.userId ? 'admin-delete' : ''}`}
+              title={
+                isAdmin && currentUserId !== post.userId
+                  ? "Supprimer ce post (Admin)"
+                  : "Supprimer ce post"
+              }
+            >
+              {isAdmin && currentUserId !== post.userId ? '👑🗑️' : '🗑️'}
+            </button>
+          </div>
+        )}
       </div>
 
       <h2>{post.title}</h2>
