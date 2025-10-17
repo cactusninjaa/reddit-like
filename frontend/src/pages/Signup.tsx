@@ -52,25 +52,13 @@ const Signup = () => {
     setError("");
 
     try {
-      let avatarBase64;
-
+      let avatarBase64 = "";
       if (avatarFile) {
         avatarBase64 = await fileToBase64(avatarFile);
-      }
+      } 
 
-      // Crée un objet userData sans avatar s'il n'y a pas de fichier
-      const userData: any = {
-        ...formData,
-        posts: [],
-      };
-
-      if (avatarBase64) {
-        userData.avatar = avatarBase64;
-      }
-
-      const res = await signupUser(userData);
-
-      if (res.Success) {
+      const res = await signupUser({ ...formData, avatar: avatarBase64, posts: [] });
+      if (res.success) {
         navigate("/login");
       }
     } catch (err) {
@@ -78,7 +66,6 @@ const Signup = () => {
       else setError("Something went wrong");
     }
   };
-
 
   return (
     <div className="auth-container">
