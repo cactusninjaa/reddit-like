@@ -127,7 +127,6 @@ function App() {
   };
   // 🧭 Toggle du formulaire
   const handleToggleCreateForm = () => setShowCreateForm(!showCreateForm);
-
   return (
     <div className="app">
       <div className="container">
@@ -140,6 +139,7 @@ function App() {
           showCreateForm={showCreateForm}
           token={token}
           onLogout={handleLogout}
+          userConnected={userConnected}
         />
 
         {showCreateForm && (
