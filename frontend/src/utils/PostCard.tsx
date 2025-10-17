@@ -6,7 +6,7 @@ import type { Comment, Post } from './Types';
 
 interface PostCardProps {
   post: Post;
-  onPostDeleted?: (postId: string) => void; 
+  onPostDeleted?: (postId: string) => void;
 }
 
 function PostCard({ post, onPostDeleted }: PostCardProps) {
@@ -165,7 +165,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
             <span className="author">Par: {post.author}</span>
           </a>
         </div>
-        
+
         {/* Bouton de suppression du post */}
         {canDeletePost() && (
           <div className="post-actions-header">
@@ -255,7 +255,7 @@ function PostCard({ post, onPostDeleted }: PostCardProps) {
                           : "Supprimer ce commentaire"
                       }
                     >
-                      🗑️  
+                      🗑️
                     </button>
                   </div>
                 )}

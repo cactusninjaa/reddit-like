@@ -57,15 +57,12 @@
   font-weight: 800;
 }
 
-
-
 .filter-section {
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  
 }
 
 .filter-section input {
@@ -86,7 +83,6 @@
   position: relative;
   overflow: hidden;
 }
-
 
 .delete-button {
   background: red;
