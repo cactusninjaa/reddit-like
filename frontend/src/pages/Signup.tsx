@@ -18,27 +18,23 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Gestion des champs texte
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Gestion du fichier avatar
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setAvatarFile(file);
 
-      // Preview rapide
       const reader = new FileReader();
       reader.onload = () => setAvatarPreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  // Convertir le fichier en Base64
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -51,18 +47,29 @@ const Signup = () => {
     });
   };
 
-  // Soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      let avatarBase64 = "";
+      let avatarBase64;
+
       if (avatarFile) {
         avatarBase64 = await fileToBase64(avatarFile);
       }
 
-      const res = await signupUser({ ...formData, avatar: avatarBase64, posts: [] });
+      // Crée un objet userData sans avatar s'il n'y a pas de fichier
+      const userData: any = {
+        ...formData,
+        posts: [],
+      };
+
+      if (avatarBase64) {
+        userData.avatar = avatarBase64;
+      }
+
+      const res = await signupUser(userData);
+
       if (res.Success) {
         navigate("/login");
       }
@@ -71,6 +78,7 @@ const Signup = () => {
       else setError("Something went wrong");
     }
   };
+
 
   return (
     <div className="auth-container">
@@ -145,7 +153,6 @@ const Signup = () => {
             />
           </div>
 
-          {/* Nouveau champ avatar */}
           <div className="auth-form-group">
             <label htmlFor="avatar">Avatar</label>
             <input

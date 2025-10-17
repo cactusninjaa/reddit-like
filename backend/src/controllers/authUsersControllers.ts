@@ -22,7 +22,7 @@ type SignUpBody = {
     password: string;
     role: "USER" | "ADMIN";
     username: string;
-    avatar?: string;
+    avatar: string;
     karma?: string;
     posts: PostsBody[];
     token?: string;
@@ -73,6 +73,8 @@ export const login = async (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
   try {
+    console.log("🟢 Body reçu:", req.body);
+
     const body: SignUpBody = req.body;
 
     if (!body) throw new Error("Request body is missing");
