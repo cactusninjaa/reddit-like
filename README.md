@@ -110,14 +110,14 @@ Les routes backend sont montées sous `/api`. Parmi les endpoints implémentés 
 - `POST /api/auth/signup` — création d'utilisateur
 - `POST /api/auth/login` — authentification (retourne un token)
 - `POST /api/auth/logout` — déconnexion
-- `GET /api/users`
-- `GET /api/users/:token`
-- `GET /api/users/id/:id`
-- `POST /api/users/:id/posts`
-- `GET /api/users/:userId/posts/:postId`
-- `DELETE /api/users/:userId/posts/:postId`
-- `POST /api/users/:userId/posts/:postId/comments`
-- `DELETE /api/users/:userId/posts/:postId/comments/:commentId`
+- `GET /api/users` — GET de tout les users
+- `GET /api/users/:token` — GET les informations d'un utilisateur à partir d'un token
+- `GET /api/users/id/:id` — GET les informations d'un utilisateur à partir d'un id
+- `POST /api/users/:id/posts` — POST un posts d'un user
+- `GET /api/users/:userId/posts/:postId` — GET le post d'un utilisateur avec postID
+- `DELETE /api/users/:userId/posts/:postId` — DELETE un post d'un utilisateur
+- `POST /api/users/:userId/posts/:postId/comments` — POST un comment d'un user sur un post précis
+- `DELETE /api/users/:userId/posts/:postId/comments/:commentId` — DELETE un comment d'un user sur un post précis
 
 Consultez `backend/src/routes.ts` et `backend/src/controllers/` pour la liste complète et la logique.
 
